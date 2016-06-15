@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "webpack-watch": "webpack -w",
+    "nodemon": "nodemon app.js",
+    "dev": "concurrent --kill-others \"npm run webpack-watch\" \"npm run nodemon\""
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -11,7 +14,17 @@
     "debug": "~2.2.0",
     "ejs": "^2.4.2",
     "express": "~4.13.1",
+    "jquery": "^3.0.0",
     "morgan": "~1.6.1",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.9.1",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "webpack": "^1.13.1"
   }
 }

@@ -6,19 +6,22 @@
 </head>
 <body>
   <form action="/registration" method="post">
-    <input type="text" name="username" placeholder="username"/>
-    <input type="text" name="fullname" placeholder="fullname" />
-    <input type="text" name="emaill" placeholder="email"/>
-    <input type="text" name="password" placeholder="password"/>
+    <input type="text" name="username" placeholder="username" required/>
+    <input type="text" name="fullname" placeholder="fullname" required />
+    <input type="text" name="email" placeholder="email" required/>
+    <input type="text" name="password" placeholder="password" required/>
     <input type="submit" />
   </form>
+  <% if (msgRegistration.length > 0) { %>
+    <div class="alert alert-danger"><%= msgRegistration %></div>
+  <% } %>
   <form action="/login" method="post">
     <input type="text" name="username" placeholder="username"/>
     <input type="text" name="password" placeholder="password" />
     <input type="submit" />
   </form>
-  <% if (message.length > 0) { %>
-    <div class="alert alert-danger"><%= message %></div>
+  <% if (msgLogin.length > 0) { %>
+    <div class="alert alert-danger"><%= msgLogin %></div>
   <% } %>
 </body>
 </html>

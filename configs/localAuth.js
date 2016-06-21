@@ -3,21 +3,20 @@ var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 
 module.exports = function(app){
-  passport.use(new LocalStrategy({passReqToCallback : true }, function(req, username, password, cb) {
+  passport.use('local', new LocalStrategy({passReqToCallback : true }, function(req, username, password, cb) {
     User.findOne({username: username}, function(err, data) {
-      console.log(data);
       if (err)
         return cb(err)
       if(!data)
         return cb(null, false, req.flash('loginMessage', 'No user found.'));
       if (data.password !== password)
         return cb(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
-      return done(null, user);
+      return cb(null, data);
     });
   }));
 
   passport.serializeUser(function(user, cb) {
-    cb(null, user[0].username);
+    cb(null, user.username);
   });
 
   passport.deserializeUser(function(username, cb) {

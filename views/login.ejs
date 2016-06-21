@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+</head>
+<body>
+  <form action="/registration" method="post">
+    <input type="text" name="username" placeholder="username"/>
+    <input type="text" name="fullname" placeholder="fullname" />
+    <input type="text" name="emaill" placeholder="email"/>
+    <input type="text" name="password" placeholder="password"/>
+    <input type="submit" />
+  </form>
+  <form action="/login" method="post">
+    <input type="text" name="username" placeholder="username"/>
+    <input type="text" name="password" placeholder="password" />
+    <input type="submit" />
+  </form>
+  <% if (message.length > 0) { %>
+    <div class="alert alert-danger"><%= message %></div>
+  <% } %>
+</body>
+</html>

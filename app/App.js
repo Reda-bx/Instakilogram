@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
-import ReactDom from 'react-dom'
+import ReactDOM from 'react-dom'
+import $ from 'jquery'
 
-class App extends Component {
-  render(){
-    return (
-      <div>
-        Hello Bros !
-      </div>
-    )
-  }
-}
+import FormSignup from './components/FormSignup'
 
-ReactDom.render(<App />, document.getElementById('app'))
+
+ReactDOM.render(<FormSignup />, document.getElementById('signup'))

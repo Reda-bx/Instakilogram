@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import $ from 'jquery'
 
-import FormSignup from './components/FormSignup'
+import Body from './components/LoginPage/LoginPage'
 
 
-ReactDOM.render(<FormSignup />, document.getElementById('signup'))
+ReactDOM.render(<Body />, document.getElementById('app'))

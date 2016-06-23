@@ -1,18 +1,22 @@
-var express = require('express')
-var router = express.Router()
-var db = require('../configs/db')
-var localAuth = require('../configs/localAuth')
-var registration = require('../configs/registration')
-var User = require('../models/users')
+const express = require('express')
+const router = express.Router()
+const Authentification = require('../controllers/Authentification')
+const passportService = require('../services/passport')
+const User = require('../models/users')
+const passport = require('passport')
 
-localAuth(router)
-registration(router)
-
+const requireLogin = passport.authenticate('local', {successRedirect: '/', ession: false})
 /* GET home page. */
 router.get('/', (req, res) => {
-  req.isAuthenticated() ? res.render('index', {user: req.user[0]}) : res.render('login',{ msgLogin: req.flash('loginMessage'), msgRegistration: req.flash('signupMessage') } )
+  req.isAuthenticated() ? res.render('index', {user: req.user[0]}) : res.render('login',{ } )
 })
 router.get('/logout', (req, res) => {req.logout(); res.redirect('/')})
 
+router.post('/registration', Authentification.registration)
+router.post('/login', requireLogin, Authentification.login)
+
+router.get('/test', function(req, res){
+  req.isAuthenticated() ? res.send('hi') : res.redirect('/')
+})
 
 module.exports = router;

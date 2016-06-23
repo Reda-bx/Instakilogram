@@ -1,9 +1,15 @@
+const jwt = require('jwt-simple')
 const User = require('../models/users')
 const config = require('../config.js')
+const passport = require('passport')
+
+function tokenForUser(user){
+  return jwt.encode({ sub: user.id, iat: new Date().getTime()}, config.secret)
+}
 
 exports.login = function(req, res, next){
-  // la wsalti lahna khod lik token
-  res.send({success: "Mar7ba bb."})
+  // la wslati lahna khod lik token
+  res.json({success: true, token: tokenForUser(req.user)})
 }
 
 exports.registration = function(req, res, next){
@@ -17,9 +23,9 @@ exports.registration = function(req, res, next){
     if(err) return next(err)
 
     if(user){
-      if(username === user.username) return res.send({error: 'Username in use'})
+      if(username === user.username) return res.send({success: false, msg: 'Username in use'})
 
-      if(email === user.email) return res.send({error: 'email in use'})
+      if(email === user.email) return res.send({success: false, msg: 'email in use'})
     }
 
     var newUser = new User({
@@ -32,12 +38,7 @@ exports.registration = function(req, res, next){
     newUser.save(function(err, user){
       if(err) return res.send({error: err})
 
-      req.login(user, function (err) {
-        if(err) return console.log(err)
-
-        res.send({success: true})
-      })
-
+      res.json({success: true, token: tokenForUser(user)})
     })
   })
 }

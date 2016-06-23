@@ -5,18 +5,19 @@ const passportService = require('../services/passport')
 const User = require('../models/users')
 const passport = require('passport')
 
-const requireLogin = passport.authenticate('local', {successRedirect: '/', ession: false})
+const requireAuth = passport.authenticate('jwt', {session: false})
+const requireLogin = passport.authenticate('local', {session: false})
 /* GET home page. */
 router.get('/', (req, res) => {
-  req.isAuthenticated() ? res.render('index', {user: req.user[0]}) : res.render('login',{ } )
+  req.isAuthenticated() ? res.render('index', {user: req.user}) : res.render('login',{ } )
 })
 router.get('/logout', (req, res) => {req.logout(); res.redirect('/')})
 
 router.post('/registration', Authentification.registration)
 router.post('/login', requireLogin, Authentification.login)
 
-router.get('/test', function(req, res){
-  req.isAuthenticated() ? res.send('hi') : res.redirect('/')
+router.get('/test', requireAuth, function(req, res){
+  res.send('hi')
 })
 
 module.exports = router;

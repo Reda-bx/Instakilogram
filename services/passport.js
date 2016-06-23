@@ -1,33 +1,38 @@
 const passport = require('passport')
 const User = require('../models/users')
 const config = require('../config')
+const JwtStrategy = require('passport-jwt').Strategy
+const ExtractJwt = require('passport-jwt').ExtractJwt
 const LocalStrategy = require('passport-local').Strategy
 
-//Create local Strategy
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+  secretOrKey: config.secret
+}
 const localLogin = new LocalStrategy(function(username, password, done){
-  // Check email and password, call done with the user
-  // if it is the correct email and password
-  //otherwise, call done with false
   User.findOne({username: username}, function(err, user){
-    if(err) return done(err)
+    if(err) return done(err, false)
 
-    if(!user) return done(null, false, {message: 'no user found'})
+    if(!user) return done(null, false)
 
-    // compare passwords
-    if(password !== user.password) return done(null, false, {message: 'false password'})
+    if(password !== user.password) return done(null, false)
 
     return done(null, user)
   })
 })
+// JWT Strategy
+const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
+  User.findById(payload.sub, function(err, user){
+    if(err) return done(err, false)
 
-passport.serializeUser(function(user, cb) {
-  cb(null, user.username);
-});
+    if(user){
+      done(null, user)
+    }else{
+      done(null, false)
+    }
+  })
+})
 
-passport.deserializeUser(function(username, cb) {
-  User.find({username: username}).then(function(user) {
-    cb(null, user);
-  });
-});
-// Tell passport to use this Strategy
+// tell passport to use this Strategy
+passport.use(jwtLogin)
 passport.use(localLogin)

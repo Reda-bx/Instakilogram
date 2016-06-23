@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { Router, Route, IndexRoute, browserHistory} from 'react-router'
 
 export default class LoginForm extends Component {
   constructor(props){
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      responeMsg: ''
     }
   }
   handleUsernameChange(e) {
@@ -28,16 +30,25 @@ export default class LoginForm extends Component {
         password: password
       }
     })
-    .then(response => console.log(response))
+    .then(response => {
+      console.log(response);
+      if(!response.data.success)
+        return this.setState({responeMsg: response.data.msg})
+      console.log('redirect the shit.')
+      // this.setState({responeMsg: response.data.success})
+    })
     .catch(err => console.error(err))
   }
   render(){
     return(
-      <form onSubmit={this.handleLogin.bind(this)}>
-        <input type="text" name="username" placeholder="username" value={this.state.username} onChange={this.handleUsernameChange.bind(this)} required/>
-        <input type="text" name="password" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange.bind(this)} required/>
-        <input type="submit" />
-      </form>
+      <div>
+        <form onSubmit={this.handleLogin.bind(this)}>
+          <input type="text" name="username" placeholder="username" value={this.state.username} onChange={this.handleUsernameChange.bind(this)} required/>
+          <input type="text" name="password" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange.bind(this)} required/>
+          <input type="submit" />
+        </form>
+        <h4>{this.state.responeMsg}</h4>
+      </div>
     )
   }
 }

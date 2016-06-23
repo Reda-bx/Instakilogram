@@ -42,8 +42,9 @@ export default class FormSignup extends Component {
       }
     })
     .then(response => {
-      if(response.data.error)
-        return this.setState({responeMsg: response.data.error})
+      console.log(response);
+      if(!response.data.success)
+        return this.setState({responeMsg: response.data.msg})
       console.log('redirect the shit.')
       // this.setState({responeMsg: response.data.success})
     })
